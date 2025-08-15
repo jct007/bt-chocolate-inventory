@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BT Chocolate Stock Inventory</title>
+    <style>
+footer:after {
+    display: JCT !important;
+}
+</style>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 50%, #CD853F 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #8B4513;
+            margin-bottom: 10px;
+        }
+
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 100px auto;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 5px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 12px 15px;
+            text-align: center;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            white-space: nowrap;
+            min-width: 120px;
+        }
+
+        .nav-tab.active {
+            background: #8B4513;
+            color: white;
+            box-shadow: 0 2px 10px rgba(139, 69, 19, 0.3);
+        }
+
+        .tab-content {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #8B4513;
+            box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.1);
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn-primary {
+            background: #8B4513;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #A0522D;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .search-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            min-width: 800px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #8B4513;
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            float: right;
+            font-size: 28px;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #8B4513;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .user-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .search-filters {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status-indicator {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-online {
+            background: #28a745;
+            color: white;
+        }
+
+        .status-offline {
+            background: #dc3545;
+            color: white;
+        }
+
+        .sync-status {
+            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .sync-info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .sync-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .sync-error {
+            background: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Screen -->
+        <div id="loginScreen" class="login-container">
+            <div class="logo">🍫 BT Chocolate</div>
+            <h2 style="text-align: center; margin-bottom: 30px;">Stock Inventory Login</h2>
+            <div class="form-group">
+                <label for="loginUsername">Username:</label>
+                <input type="text" id="loginUsername" placeholder="Enter username" value="jithesh">
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Password:</label>
+                <input type="password" id="loginPassword" placeholder="Enter password" value="jithesh3452">
+            </div>
+            <button class="btn btn-primary" onclick="login()" style="width: 100%;">Login</button>
+            <div id="loginError" class="alert alert-error hidden" style="margin-top: 15px;">
+                Invalid username or password
+            </div>
+        </div>
+
+        <!-- Main App -->
+        <div id="mainApp" class="hidden">
+            <div class="header">
+                <div class="logo">🍫 BT Chocolate Stock Inventory</div>
+                <div class="user-info">
+                    <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                        <span id="welcomeUser"></span>
+                        <div id="connectionStatus" class="status-indicator"></div>
+                        <div id="syncStatus" class="sync-status"></div>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-primary" onclick="simulateSync()" title="Sync data">
+                            🔄 Sync
+                        </button>
+                        <button class="btn btn-secondary" onclick="logout()">Logout</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="showTab('dashboard')">Dashboard</button>
+                <button class="nav-tab" onclick="showTab('stockList')">Stock List</button>
+                <button class="nav-tab" onclick="showTab('stockAdd')">Stock Add</button>
+                <button class="nav-tab" onclick="showTab('stockOut')">Stock Out</button>
+                <button class="nav-tab" onclick="showTab('balanceStock')">Balance Stock</button>
+                <button class="nav-tab" onclick="showTab('search')">Search Items</button>
+                <button class="nav-tab" id="userManagementTab" onclick="showTab('userManagement')">User Management</button>
+            </div>
+
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content">
+                <h2>Dashboard</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalItems">0</div>
+                        <div class="stat-label">Total Items</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalQuantity">0</div>
+                        <div class="stat-label">Total Quantity</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="lowStock">0</div>
+                        <div class="stat-label">Low Stock Items</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalUsers">3</div>
+                        <div class="stat-label">Total Users</div>
+                    </div>
+                </div>
+                <h3>Recent Activities</h3>
+                <div class="table-container">
+                    <table id="recentActivitiesTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Activity</th>
+                                <th>Item</th>
+                                <th>Quantity</th>
+                                <th>User</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentActivitiesBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Stock List Tab -->
+            <div id="stockList" class="tab-content hidden">
+                <h2>Stock List</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Stock ID</th>
+                                <th>Stock Name</th>
+                                <th>Barcode</th>
+                                <th>Total Quantity</th>
+                                <th>Last Updated</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stockListBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Stock Add Tab -->
+            <div id="stockAdd" class="tab-content hidden">
+                <h2>Add Stock</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="addStockName">Stock Name:</label>
+                        <input type="text" id="addStockName" placeholder="Enter stock name">
+                    </div>
+                    <div class="form-group">
+                        <label for="addBarcode">Barcode:</label>
+                        <input type="text" id="addBarcode" placeholder="Enter barcode">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="addStockId">Stock ID:</label>
+                        <input type="text" id="addStockId" placeholder="Enter stock ID">
+                    </div>
+                    <div class="form-group">
+                        <label for="addQuantity">Quantity:</label>
+                        <input type="number" id="addQuantity" placeholder="Enter quantity" min="1">
+                    </div>
+                </div>
+                <button class="btn btn-success" onclick="addStock()">Add Stock</button>
+                <button class="btn btn-secondary" onclick="clearAddForm()">Clear</button>
+            </div>
+
+            <!-- Stock Out Tab -->
+            <div id="stockOut" class="tab-content hidden">
+                <h2>Stock Out</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="outStockSelect">Select Stock:</label>
+                        <select id="outStockSelect" onchange="fillOutStockDetails()">
+                            <option value="">Select a stock item</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="outQuantity">Quantity Out:</label>
+                        <input type="number" id="outQuantity" placeholder="Enter quantity" min="1">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="outStockName">Stock Name:</label>
+                        <input type="text" id="outStockName" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="outBarcode">Barcode:</label>
+                        <input type="text" id="outBarcode" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Available Quantity: <span id="availableQuantity">0</span></label>
+                </div>
+                <button class="btn btn-danger" onclick="stockOut()">Stock Out</button>
+                <button class="btn btn-secondary" onclick="clearOutForm()">Clear</button>
+            </div>
+
+            <!-- Balance Stock Tab -->
+            <div id="balanceStock" class="tab-content hidden">
+                <h2>Balance Stock</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Stock ID</th>
+                                <th>Stock Name</th>
+                                <th>Barcode</th>
+                                <th>Current Quantity</th>
+                                <th>Last Added</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="balanceStockBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Search Items Tab -->
+            <div id="search" class="tab-content hidden">
+                <h2>Search Items</h2>
+                <div class="search-section">
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="searchStockIn" checked>
+                            <label for="searchStockIn">Stock Add</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="searchStockOut" checked>
+                            <label for="searchStockOut">Stock Out</label>
+                        </div>
+                    </div>
+                    <div class="search-filters">
+                        <div class="form-group">
+                            <label for="searchStockName">Stock Name:</label>
+                            <input type="text" id="searchStockName" placeholder="Search by stock name">
+                        </div>
+                        <div class="form-group">
+                            <label for="searchBarcode">Barcode:</label>
+                            <input type="text" id="searchBarcode" placeholder="Search by barcode">
+                        </div>
+                        <div class="form-group">
+                            <label for="searchStockId">Stock ID:</label>
+                            <input type="text" id="searchStockId" placeholder="Search by stock ID">
+                        </div>
+                        <div class="form-group">
+                            <label for="searchDateFrom">Date From:</label>
+                            <input type="date" id="searchDateFrom">
+                        </div>
+                        <div class="form-group">
+                            <label for="searchDateTo">Date To:</label>
+                            <input type="date" id="searchDateTo">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="searchItems()">Search</button>
+                    <button class="btn btn-secondary" onclick="clearSearch()">Clear</button>
+                    <button class="btn btn-success" onclick="exportToPDF()">Export to PDF</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Stock ID</th>
+                                <th>Stock Name</th>
+                                <th>Barcode</th>
+                                <th>Quantity</th>
+                                <th>User</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="searchResultsBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- User Management Tab -->
+            <div id="userManagement" class="tab-content hidden">
+                <h2>User Management</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="newUsername">Username:</label>
+                        <input type="text" id="newUsername" placeholder="Enter username">
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">Password:</label>
+                        <input type="password" id="newPassword" placeholder="Enter password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="userRole">Role:</label>
+                    <select id="userRole">
+                        <option value="user">User</option>
+                        <option value="master">Master</option>
+                    </select>
+                </div>
+                <button class="btn btn-success" onclick="addUser()">Add User</button>
+                <button class="btn btn-secondary" onclick="clearUserForm()">Clear</button>
+                
+                <h3 style="margin-top: 30px;">Existing Users</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Role</th>
+                                <th>Created Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Modal -->
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeEditModal()">&times;</span>
+                <h2>Edit Transaction</h2>
+                <div id="editForm">
+                    <div class="form-group">
+                        <label for="editStockName">Stock Name:</label>
+                        <input type="text" id="editStockName">
+                    </div>
+                    <div class="form-group">
+                        <label for="editBarcode">Barcode:</label>
+                        <input type="text" id="editBarcode">
+                    </div>
+                    <div class="form-group">
+                        <label for="editStockId">Stock ID:</label>
+                        <input type="text" id="editStockId">
+                    </div>
+                    <div class="form-group">
+                        <label for="editQuantity">Quantity:</label>
+                        <input type="number" id="editQuantity" min="1">
+                    </div>
+                    <button class="btn btn-success" onclick="saveEdit()">Save Changes</button>
+                    <button class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentUser = null;
+        let stockData = [];
+        let transactionHistory = [];
+        let users = [
+            { username: 'jithesh', password: 'jithesh3452', role: 'master', createdDate: '2024-01-01' },
+            { username: 'jitheshc', password: 'jc3452', role: 'user', createdDate: '2024-01-01' },
+            { username: 'BTmanager', password: 'BT39115252', role: 'master', createdDate: '2024-01-01' }
+        ];
+        let editingTransaction = null;
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSampleData();
+            updateConnectionStatus();
+            showSyncStatus('Ready');
+        });
+
+        // Load sample data
+        function loadSampleData() {
+            stockData = [
+                { stockId: 'CHO001', stockName: '3pieces gray choco box', barcode: '123456789012', quantity: 150, lastUpdated: '2024-08-10' },
+                { stockId: 'CHO002', stockName: 'Milk Chocolate Bar', barcode: '123456789013', quantity: 200, lastUpdated: '2024-08-12' },
+                { stockId: 'CHO003', stockName: 'White Chocolate Bar', barcode: '123456789014', quantity: 75, lastUpdated: '2024-08-11' },
+                { stockId: 'CHO004', stockName: 'Chocolate Truffle Box', barcode: '123456789015', quantity: 50, lastUpdated: '2024-08-13' },
+                { stockId: 'CHO005', stockName: 'Hot Chocolate Mix', barcode: '123456789016', quantity: 30, lastUpdated: '2024-08-09' }
+            ];
+
+            transactionHistory = [
+                { id: 1, date: '2024-08-14', type: 'Stock In', stockId: 'CHO001', stockName: 'Dark Chocolate Bar', barcode: '123456789012', quantity: 50, user: 'admin' },
+                { id: 2, date: '2024-08-14', type: 'Stock Out', stockId: 'CHO002', stockName: 'Milk Chocolate Bar', barcode: '123456789013', quantity: 25, user: 'btchoco' },
+                { id: 3, date: '2024-08-13', type: 'Stock In', stockId: 'CHO003', stockName: 'White Chocolate Bar', barcode: '123456789014', quantity: 100, user: 'manager' }
+            ];
+        }
+
+        // Authentication functions
+        function login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+                document.getElementById('welcomeUser').textContent = `Welcome, ${user.username}`;
+                
+                // Hide user management tab for non-master users
+                if (user.role !== 'master') {
+                    document.getElementById('userManagementTab').style.display = 'none';
+                }
+                
+                // Load dashboard
+                showTab('dashboard');
+                updateDashboard();
+                
+                document.getElementById('loginError').classList.add('hidden');
+            } else {
+                document.getElementById('loginError').classList.remove('hidden');
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('mainApp').classList.add('hidden');
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+        }
+
+        // Tab navigation
+        function showTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.add('hidden'));
+            
+            // Remove active class from all nav tabs
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.remove('hidden');
+            
+            // Add active class to selected nav tab
+            event.target.classList.add('active');
+            
+            // Update content based on tab
+            switch(tabName) {
+                case 'dashboard':
+                    updateDashboard();
+                    break;
+                case 'stockList':
+                    updateStockList();
+                    break;
+                case 'stockOut':
+                    updateStockOutDropdown();
+                    break;
+                case 'balanceStock':
+                    updateBalanceStock();
+                    break;
+                case 'userManagement':
+                    updateUsersTable();
+                    break;
+            }
+        }
+
+        // Dashboard functions
+        function updateDashboard() {
+            document.getElementById('totalItems').textContent = stockData.length;
+            document.getElementById('totalQuantity').textContent = stockData.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('lowStock').textContent = stockData.filter(item => item.quantity < 50).length;
+            
+            updateRecentActivities();
+        }
+
+        function updateRecentActivities() {
+            const tbody = document.getElementById('recentActivitiesBody');
+            tbody.innerHTML = '';
+            
+            const recentActivities = transactionHistory.slice(-10).reverse();
+            
+            recentActivities.forEach(activity => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${activity.date}</td>
+                    <td>${activity.type}</td>
+                    <td>${activity.stockName}</td>
+                    <td>${activity.quantity}</td>
+                    <td>${activity.user}</td>
+                `;
+            });
+        }
+
+        // Stock List functions
+        function updateStockList() {
+            const tbody = document.getElementById('stockListBody');
+            tbody.innerHTML = '';
+            
+            stockData.forEach(stock => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${stock.stockId}</td>
+                    <td>${stock.stockName}</td>
+                    <td>${stock.barcode}</td>
+                    <td>${stock.quantity}</td>
+                    <td>${stock.lastUpdated}</td>
+                    <td>
+                        <div class="actions">
+                            <button class="btn btn-primary" onclick="editStock('${stock.stockId}')">Edit</button>
+                            <button class="btn btn-danger" onclick="deleteStock('${stock.stockId}')">Delete</button>
+                        </div>
+                    </td>
+                `;
+            });
+        }
+
+        // Stock Add functions
+        function addStock() {
+            const stockName = document.getElementById('addStockName').value;
+            const barcode = document.getElementById('addBarcode').value;
+            const stockId = document.getElementById('addStockId').value;
+            const quantity = parseInt(document.getElementById('addQuantity').value);
+
+            if (!stockName || !barcode || !stockId || !quantity) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            // Check if stock ID already exists
+            if (stockData.find(item => item.stockId === stockId)) {
+                alert('Stock ID already exists');
+                return;
+            }
+
+            const newStock = {
+                stockId: stockId,
+                stockName: stockName,
+                barcode: barcode,
+                quantity: quantity,
+                lastUpdated: new Date().toISOString().split('T')[0]
+            };
+
+            stockData.push(newStock);
+
+            // Add to transaction history
+            transactionHistory.push({
+                id: Date.now(),
+                date: new Date().toISOString().split('T')[0],
+                type: 'Stock In',
+                stockId: stockId,
+                stockName: stockName,
+                barcode: barcode,
+                quantity: quantity,
+                user: currentUser.username
+            });
+
+            clearAddForm();
+            alert('Stock added successfully!');
+            updateDashboard();
+        }
+
+        function clearAddForm() {
+            document.getElementById('addStockName').value = '';
+            document.getElementById('addBarcode').value = '';
+            document.getElementById('addStockId').value = '';
+            document.getElementById('addQuantity').value = '';
+        }
+
+        // Stock Out functions
+        function updateStockOutDropdown() {
+            const select = document.getElementById('outStockSelect');
+            select.innerHTML = '<option value="">Select a stock item</option>';
+            
+            stockData.forEach(stock => {
+                if (stock.quantity > 0) {
+                    const option = document.createElement('option');
+                    option.value = stock.stockId;
+                    option.textContent = `${stock.stockName} (${stock.stockId})`;
+                    select.appendChild(option);
+                }
+            });
+        }
+
+        function fillOutStockDetails() {
+            const stockId = document.getElementById('outStockSelect').value;
+            const stock = stockData.find(item => item.stockId === stockId);
+            
+            if (stock) {
+                document.getElementById('outStockName').value = stock.stockName;
+                document.getElementById('outBarcode').value = stock.barcode;
+                document.getElementById('availableQuantity').textContent = stock.quantity;
+            } else {
+                document.getElementById('outStockName').value = '';
+                document.getElementById('outBarcode').value = '';
+                document.getElementById('availableQuantity').textContent = '0';
+            }
+        }
+
+        function stockOut() {
+            const stockId = document.getElementById('outStockSelect').value;
+            const quantity = parseInt(document.getElementById('outQuantity').value);
+            
+            if (!stockId || !quantity) {
+                alert('Please select a stock item and enter quantity');
+                return;
+            }
+
+            const stock = stockData.find(item => item.stockId === stockId);
+            
+            if (!stock) {
+                alert('Stock item not found');
+                return;
+            }
+
+            if (quantity > stock.quantity) {
+                alert('Insufficient stock quantity');
+                return;
+            }
+
+            // Update stock quantity
+            stock.quantity -= quantity;
+            stock.lastUpdated = new Date().toISOString().split('T')[0];
+
+            // Add to transaction history
+            transactionHistory.push({
+                id: Date.now(),
+                date: new Date().toISOString().split('T')[0],
+                type: 'Stock Out',
+                stockId: stockId,
+                stockName: stock.stockName,
+                barcode: stock.barcode,
+                quantity: quantity,
+                user: currentUser.username
+            });
+
+            clearOutForm();
+            alert('Stock out successful!');
+            updateDashboard();
+        }
+
+        function clearOutForm() {
+            document.getElementById('outStockSelect').value = '';
+            document.getElementById('outQuantity').value = '';
+            document.getElementById('outStockName').value = '';
+            document.getElementById('outBarcode').value = '';
+            document.getElementById('availableQuantity').textContent = '0';
+        }
+
+        // Balance Stock functions
+        function updateBalanceStock() {
+            const tbody = document.getElementById('balanceStockBody');
+            tbody.innerHTML = '';
+            
+            stockData.forEach(stock => {
+                const lastAddedTransaction = transactionHistory
+                    .filter(t => t.stockId === stock.stockId && t.type === 'Stock In')
+                    .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+                
+                const lastAdded = lastAddedTransaction ? lastAddedTransaction.date : 'N/A';
+                
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${stock.stockId}</td>
+                    <td>${stock.stockName}</td>
+                    <td>${stock.barcode}</td>
+                    <td>${stock.quantity}</td>
+                    <td>${lastAdded}</td>
+                    <td>
+                        <div class="actions">
+                            <button class="btn btn-primary" onclick="adjustStock('${stock.stockId}')">Adjust</button>
+                        </div>
+                    </td>
+                `;
+            });
+        }
+
+        function adjustStock(stockId) {
+            const stock = stockData.find(item => item.stockId === stockId);
+            if (!stock) return;
+
+            const newQuantity = prompt(`Current quantity: ${stock.quantity}\nEnter new quantity:`, stock.quantity);
+            if (newQuantity === null || newQuantity === '') return;
+
+            const quantity = parseInt(newQuantity);
+            if (isNaN(quantity) || quantity < 0) {
+                alert('Please enter a valid quantity');
+                return;
+            }
+
+            const difference = quantity - stock.quantity;
+            stock.quantity = quantity;
+            stock.lastUpdated = new Date().toISOString().split('T')[0];
+
+            // Add adjustment to transaction history
+            if (difference !== 0) {
+                transactionHistory.push({
+                    id: Date.now(),
+                    date: new Date().toISOString().split('T')[0],
+                    type: difference > 0 ? 'Stock Adjustment (+)' : 'Stock Adjustment (-)',
+                    stockId: stockId,
+                    stockName: stock.stockName,
+                    barcode: stock.barcode,
+                    quantity: Math.abs(difference),
+                    user: currentUser.username
+                });
+            }
+
+            updateBalanceStock();
+            updateDashboard();
+            alert('Stock quantity adjusted successfully!');
+        }
+
+        // Search functions
+        function searchItems() {
+            const stockName = document.getElementById('searchStockName').value.toLowerCase();
+            const barcode = document.getElementById('searchBarcode').value.toLowerCase();
+            const stockId = document.getElementById('searchStockId').value.toLowerCase();
+            const dateFrom = document.getElementById('searchDateFrom').value;
+            const dateTo = document.getElementById('searchDateTo').value;
+            const includeStockIn = document.getElementById('searchStockIn').checked;
+            const includeStockOut = document.getElementById('searchStockOut').checked;
+
+            let filteredTransactions = transactionHistory.filter(transaction => {
+                // Filter by transaction type
+                if (!includeStockIn && transaction.type.includes('Stock In')) return false;
+                if (!includeStockOut && transaction.type.includes('Stock Out')) return false;
+
+                // Filter by stock name
+                if (stockName && !transaction.stockName.toLowerCase().includes(stockName)) return false;
+
+                // Filter by barcode
+                if (barcode && !transaction.barcode.toLowerCase().includes(barcode)) return false;
+
+                // Filter by stock ID
+                if (stockId && !transaction.stockId.toLowerCase().includes(stockId)) return false;
+
+                // Filter by date range
+                if (dateFrom && transaction.date < dateFrom) return false;
+                if (dateTo && transaction.date > dateTo) return false;
+
+                return true;
+            });
+
+            displaySearchResults(filteredTransactions);
+        }
+
+        function displaySearchResults(results) {
+            const tbody = document.getElementById('searchResultsBody');
+            tbody.innerHTML = '';
+
+            results.forEach(transaction => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${transaction.date}</td>
+                    <td>${transaction.type}</td>
+                    <td>${transaction.stockId}</td>
+                    <td>${transaction.stockName}</td>
+                    <td>${transaction.barcode}</td>
+                    <td>${transaction.quantity}</td>
+                    <td>${transaction.user}</td>
+                    <td>
+                        <div class="actions">
+                            <button class="btn btn-primary" onclick="editTransaction(${transaction.id})">Edit</button>
+                            <button class="btn btn-danger" onclick="deleteTransaction(${transaction.id})">Delete</button>
+                        </div>
+                    </td>
+                `;
+            });
+        }
+
+        function clearSearch() {
+            document.getElementById('searchStockName').value = '';
+            document.getElementById('searchBarcode').value = '';
+            document.getElementById('searchStockId').value = '';
+            document.getElementById('searchDateFrom').value = '';
+            document.getElementById('searchDateTo').value = '';
+            document.getElementById('searchStockIn').checked = true;
+            document.getElementById('searchStockOut').checked = true;
+            
+            document.getElementById('searchResultsBody').innerHTML = '';
+        }
+
+        function exportToPDF() {
+            alert('PDF export feature would be implemented with a PDF library like jsPDF');
+        }
+
+        // User Management functions
+        function addUser() {
+            const username = document.getElementById('newUsername').value;
+            const password = document.getElementById('newPassword').value;
+            const role = document.getElementById('userRole').value;
+
+            if (!username || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            if (users.find(user => user.username === username)) {
+                alert('Username already exists');
+                return;
+            }
+
+            const newUser = {
+                username: username,
+                password: password,
+                role: role,
+                createdDate: new Date().toISOString().split('T')[0]
+            };
+
+            users.push(newUser);
+            clearUserForm();
+            updateUsersTable();
+            alert('User added successfully!');
+        }
+
+        function clearUserForm() {
+            document.getElementById('newUsername').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('userRole').value = 'user';
+        }
+
+        function updateUsersTable() {
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = '';
+
+            users.forEach(user => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${user.username}</td>
+                    <td>${user.role}</td>
+                    <td>${user.createdDate}</td>
+                    <td>
+                        <div class="actions">
+                            <button class="btn btn-danger" onclick="deleteUser('${user.username}')">Delete</button>
+                        </div>
+                    </td>
+                `;
+            });
+        }
+
+        function deleteUser(username) {
+            if (username === 'admin') {
+                alert('Cannot delete admin user');
+                return;
+            }
+
+            if (confirm(`Are you sure you want to delete user ${username}?`)) {
+                const index = users.findIndex(user => user.username === username);
+                if (index > -1) {
+                    users.splice(index, 1);
+                    updateUsersTable();
+                    alert('User deleted successfully!');
+                }
+            }
+        }
+
+        // Edit and Delete functions
+        function editStock(stockId) {
+            const stock = stockData.find(item => item.stockId === stockId);
+            if (!stock) return;
+
+            const newName = prompt('Enter new stock name:', stock.stockName);
+            if (newName && newName !== stock.stockName) {
+                stock.stockName = newName;
+                stock.lastUpdated = new Date().toISOString().split('T')[0];
+                updateStockList();
+                alert('Stock updated successfully!');
+            }
+        }
+
+        function deleteStock(stockId) {
+            if (confirm('Are you sure you want to delete this stock item?')) {
+                const index = stockData.findIndex(item => item.stockId === stockId);
+                if (index > -1) {
+                    stockData.splice(index, 1);
+                    updateStockList();
+                    updateDashboard();
+                    alert('Stock deleted successfully!');
+                }
+            }
+        }
+
+        function editTransaction(transactionId) {
+            const transaction = transactionHistory.find(t => t.id === transactionId);
+            if (!transaction) return;
+
+            editingTransaction = transaction;
+            
+            // Fill modal with transaction data
+            document.getElementById('editStockName').value = transaction.stockName;
+            document.getElementById('editBarcode').value = transaction.barcode;
+            document.getElementById('editStockId').value = transaction.stockId;
+            document.getElementById('editQuantity').value = transaction.quantity;
+            
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        function deleteTransaction(transactionId) {
+            if (confirm('Are you sure you want to delete this transaction?')) {
+                const index = transactionHistory.findIndex(t => t.id === transactionId);
+                if (index > -1) {
+                    transactionHistory.splice(index, 1);
+                    searchItems(); // Refresh search results
+                    updateDashboard();
+                    alert('Transaction deleted successfully!');
+                }
+            }
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+            editingTransaction = null;
+        }
+
+        function saveEdit() {
+            if (!editingTransaction) return;
+
+            editingTransaction.stockName = document.getElementById('editStockName').value;
+            editingTransaction.barcode = document.getElementById('editBarcode').value;
+            editingTransaction.stockId = document.getElementById('editStockId').value;
+            editingTransaction.quantity = parseInt(document.getElementById('editQuantity').value);
+
+            closeEditModal();
+            searchItems(); // Refresh search results
+            alert('Transaction updated successfully!');
+        }
+
+        // Status and Sync functions
+        function updateConnectionStatus() {
+            const statusElement = document.getElementById('connectionStatus');
+            const isOnline = navigator.onLine;
+            
+            if (isOnline) {
+                statusElement.textContent = 'Online';
+                statusElement.className = 'status-indicator status-online';
+            } else {
+                statusElement.textContent = 'Offline';
+                statusElement.className = 'status-indicator status-offline';
+            }
+        }
+
+        function showSyncStatus(message, type = 'info') {
+            const syncElement = document.getElementById('syncStatus');
+            syncElement.textContent = message;
+            
+            syncElement.className = 'sync-status';
+            switch(type) {
+                case 'success':
+                    syncElement.classList.add('sync-success');
+                    break;
+                case 'error':
+                    syncElement.classList.add('sync-error');
+                    break;
+                default:
+                    syncElement.classList.add('sync-info');
+            }
+        }
+
+        function simulateSync() {
+            showSyncStatus('Syncing...', 'info');
+            
+            setTimeout(() => {
+                showSyncStatus('Sync completed', 'success');
+                setTimeout(() => {
+                    showSyncStatus('Ready', 'info');
+                }, 2000);
+            }, 1000);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target === modal) {
+                closeEditModal();
+            }
+        }
+
+        // Update connection status on network change
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+
+        // Allow Enter key to login
+        document.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter' && !document.getElementById('loginScreen').classList.contains('hidden')) {
+                login();
+            }
+        });
+    </script>
+</body>
+</html>
